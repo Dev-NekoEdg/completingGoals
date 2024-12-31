@@ -1,0 +1,22 @@
+<div class="pt-2">
+    <div class="input-group mb-3">
+      <button class="btn btn-outline-secondary dropdown-toggle"
+        type="button" data-bs-toggle="dropdown"
+        aria-expanded="false">Buscar por : {{searchType}} </button>
+      <ul class="dropdown-menu" formControlName="typeSearch" >
+        <li class="dropdown-item" (click)="selectSearchType('Nombre')" selected>Nombre</li>
+        <li class="dropdown-item" (click)="selectSearchType('Id')">Id</li>
+        <!-- <li><a class="dropdown-item" href="#">Separated link</a></li> -->
+      </ul>
+      <input type="text"
+        class="form-control"
+        (value)="searchValue"
+        aria-label="Text input with dropdown button">
+      <input type="button" class="btn btn-success" value="Buscar"
+        (click)="searchGoal()">
+    </div>
+</div>
+
+<div>
+  here goes the list...
+</div>
