@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import { Component, OnInit, signal, Signal } from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
 @Component({
   selector: 'app-list-goals',
   // modulo para los formularios reactivos.
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './list-goals.component.html',
   styleUrl: './list-goals.component.css'
 })
@@ -12,11 +12,12 @@ export class ListGoalsComponent implements OnInit{
 
   searchForm: FormGroup;
   searchType: string;
-  searchValue: string;
+  searchValue: FormControl;
 
   constructor(private builder: FormBuilder){
     this.searchType = 'Nombre';
-    this.searchValue = '';
+    this.searchValue = new FormControl('');
+
     this.searchForm = this.builder.group({
       typeSearch: [''],
       valueSearch: ['']
@@ -37,7 +38,7 @@ export class ListGoalsComponent implements OnInit{
   searchGoal(){
 
     console.log(this.searchType);
-    console.log(this.searchValue);
+    console.log(this.searchValue.value);
 
     console.log(this.searchForm.controls);
 
