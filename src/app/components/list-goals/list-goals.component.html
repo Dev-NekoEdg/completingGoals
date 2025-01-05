@@ -19,5 +19,33 @@
 </div>
 
 <div>
-  here goes the list...
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Meta</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of goalsList()">
+        <td>{{item.id}}</td>
+        <td>{{item.name}}</td>
+      </tr>s
+    </tbody>
+  </table>
+  <nav aria-label="...">
+    <ul class="pagination pagination-sm">
+      <li class="page-item active" aria-current="page">
+        <span class="page-link">1</span>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+    </ul>
+  </nav>
+</div>
+
+<div>
+  <pre>
+    {{ goalsList() | json}}
+  </pre>
 </div>
