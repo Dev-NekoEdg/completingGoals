@@ -1,13 +1,16 @@
-import { Component, OnInit, signal, Signal } from '@angular/core';
+import { Component, OnInit, signal, Signal, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
-import { GoalsListServicesService } from '../../services/goals-list-services.service';
 import { Goals } from '../../models/goals';
 import { CommonModule } from '@angular/common';
-import { Pagination } from '../../models/pagination';
+import { FilterData, FilterParam } from '../../models/filterData';
+import { Router, RouterLink, RouterModule } from '@angular/router';
+
+import { pagination } from '../../customConfig';
+import { GoalService } from '../../services/goal.service';
 @Component({
   selector: 'app-list-goals',
   // modulo para los formularios reactivos.
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule ],
   templateUrl: './list-goals.component.html',
   styleUrl: './list-goals.component.css'
 })
@@ -17,20 +20,23 @@ export class ListGoalsComponent implements OnInit {
   searchForm: FormGroup;
   searchType: string;
   searchValue: FormControl;
-  goalsList= signal<Goals[]>([]);
-  pagination: Pagination;
+  goalsList = signal<Goals[]>([]);
+  pagination: FilterData<FilterParam>;
+  // router: RouterLink = inject(RouterLink);
 
-  constructor(private builder: FormBuilder,
-    private service: GoalsListServicesService
+  constructor(
+    private builder: FormBuilder,
+    private service: GoalService,
+    private router: Router
   ) {
     this.searchType = 'Nombre';
     this.searchValue = new FormControl('');
     this.pagination = {
       currentPage: 1,
-      selectedRows: 1,
+      pageSize: pagination.defaultSize,
       totalRecords: 0,
-      pages: [],
-      rowsPerPages: [],
+      pages: 0,
+      data: null,
     };
 
     this.searchForm = this.builder.group({
@@ -42,11 +48,11 @@ export class ListGoalsComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.getAllGoals().subscribe({
-      next: (data: Goals[]) =>{
-        console.log({data});
+      next: (data: Goals[]) => {
+        console.log({ data });
         this.goalsList.set(data);
       },
-      error: (err)=>{
+      error: (err) => {
         console.log(err);
       }
     });
@@ -70,6 +76,16 @@ export class ListGoalsComponent implements OnInit {
     this.searchType = search;
     this.searchValue.setValue('');
   }
+
+  editName(): void {
+
+  }
+
+  redirectDeatil(listId: number) {
+    this.router.navigate(['goal-datails',listId ]);
+
+  }
+
 
 
 }

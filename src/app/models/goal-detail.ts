@@ -1,9 +1,9 @@
 export interface GoalDetail {
-  Id:number;
-  Name: string;
-  Description: string;
-  ImageUrl: string;
-  ListId: number;
-  ListName? : string;
-  Completed: boolean;
+  id:number;
+  name: string;
+  description: string;
+  imageUrl: string;
+  listId: number;
+  listName? : string;
+  completed: boolean;
 }

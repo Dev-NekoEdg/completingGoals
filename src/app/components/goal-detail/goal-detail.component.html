@@ -1,1 +1,17 @@
 <p>goal-detail works!</p>
+Id lista : {{listId}}
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @for(detail of goalDetails(); track detail.id){
+    <div class="col">
+      <div class="card" style="width: 18rem;">
+        <img src="{{detail.imageUrl}}" class="card-img-top" >
+        <div class="card-body">
+          <h5 class="card-title">{{detail.name}}</h5>
+          <p class="card-text">{{detail.description}}</p>
+          <input class="btn btn-primary" value="Completar">
+        </div>
+      </div>
+    </div>
+    }
+</div>

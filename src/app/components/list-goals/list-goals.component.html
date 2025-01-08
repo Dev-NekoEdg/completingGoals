@@ -24,13 +24,23 @@
       <tr>
         <th scope="col">Id</th>
         <th scope="col">Meta</th>
+        <th scope="col">Acciones</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let item of goalsList()">
         <td>{{item.id}}</td>
         <td>{{item.name}}</td>
-      </tr>s
+        <td>
+          <input type="button" class="btn btn-outline-primary"
+            (click)="editName()"
+            value="Editar"
+            >
+            <a class="btn btn-outline-info"
+            (click)="redirectDeatil(item.id)"
+            >test</a>
+        </td>
+      </tr>
     </tbody>
   </table>
   <nav aria-label="...">
