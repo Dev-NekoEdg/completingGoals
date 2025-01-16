@@ -1,0 +1,66 @@
+<div #testModal class="modal fade" id="editDetailModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">{{goalDetail().listName}}</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3 row">
+          <img src="{{goalDetail().imageUrl}}" class="h-50 w-50 img-thumbnail mx-auto d-block">
+        </div>
+        <form [formGroup]="myForm">
+          <p>ListId: {{goalDetail().listId}}</p>
+          <p>Id: {{goalDetail().id}}</p>
+          <div class="mb-3 row">
+            <label class="col-sm-3 col-form-label">Nombre:</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control"
+              formControlName="name"
+              >
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="col-sm-3 col-form-label">Descripci&oacute;n:</label>
+            <div class="col-sm-9">
+              <textarea class="form-control"
+              formControlName="description"
+              rows="1"></textarea>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="col-sm-3 col-form-label">Completada:</label>
+            <div class="col-sm-9 col-form-label">
+              <div class="form-check form-switch">
+                <input class="form-check-input"
+                formControlName="completed"
+                type="checkbox" role="switch" >
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="mb-3 row">
+            <div class="col-sm-12">
+              <div class="input-group">
+                <input type="file" class="form-control"
+                  (change)="handleFileInput($any($event.target).files)"
+                  aria-label="U-pload">
+                <input class="btn btn-outline-secondary" type="button"
+                (click)="updateImageOnly()"
+                  value="Button">
+              </div>
+            </div>
+          </div>
+        </form>
+        <pre>
+          {{goalDetail() | json }}
+        </pre>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Update</button>
+      </div>
+    </div>
+  </div>
+</div>

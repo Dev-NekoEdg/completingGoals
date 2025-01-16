@@ -8,11 +8,10 @@ export const pagination = {
 
 export const endpoints = {
   baseUrl: 'https://localhost:7164/api/v1/',
-  list:'lists/',
+  list: 'lists/',
   listDetails: 'lists-items/'
 }
 
-export const imageDefault= {
-imageNotFound:'https://storedatanekoedg.blob.core.windows.net/public-container/goalsList/imageNotFound.png'
-
+export const imageDefault = {
+  imageNotFound: 'https://storedatanekoedg.blob.core.windows.net/public-container/goalsList/imageNotFound.png'
 }

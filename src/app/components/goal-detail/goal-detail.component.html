@@ -1,17 +1,54 @@
-<p>goal-detail works!</p>
-Id lista : {{listId}}
+<p>goal-detail works!
+  Id lista : {{listId}}
+  modal: {{goalDetailsActived()}}
+</p>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
-    @for(detail of goalDetails(); track detail.id){
-    <div class="col">
-      <div class="card" style="width: 18rem;">
-        <img src="{{detail.imageUrl}}" class="card-img-top" >
-        <div class="card-body">
-          <h5 class="card-title">{{detail.name}}</h5>
-          <p class="card-text">{{detail.description}}</p>
-          <input class="btn btn-primary" value="Completar">
-        </div>
+  @for(detail of goalDetails(); track detail.id){
+  <div class="col">
+    <div class="card" style="width: 18rem;" (dblclick)="changeSelectedGoalDetail(detail.id)">
+      <img src="{{detail.imageUrl}}" class="card-img-top">
+      <div class="card-body">
+        <h5 class="card-title">{{detail.name}}</h5>
+        <p class="card-text">{{detail.description}}</p>
+        <input class="btn btn-primary" value="Completar">
       </div>
     </div>
-    }
+  </div>
+  }
 </div>
+
+<div class="mt-3">
+  <!-- <app-paginator [filter]="filter"></app-paginator> -->
+  <div>
+    <div>
+      <select [value]="currentSize()" (change)="changeSelection()" class="form-select">
+        @for(v of selectPageSizes(); track v ){
+        <option value="{{v}}">{{v}}</option>
+        }
+      </select>
+    </div>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li class="page-item">
+          <a class="page-link">Previous</a>
+        </li>
+        @for(page of pages(); track page){
+        <li class="page-item">
+          <button class="page-link" (click)="changeCurrentPage(page)">
+            {{page}}
+          </button>
+        </li>
+        }
+        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<!-- @if(goalDetailsActived()){
+<div class="modal" tabindex="-1" aria-labelledby="exampleModalLabel">
+  <app-edit-goal-detail></app-edit-goal-detail>
+</div>
+} -->
+<app-edit-goal-detail></app-edit-goal-detail>

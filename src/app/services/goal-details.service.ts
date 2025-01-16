@@ -23,6 +23,14 @@ export class GoalDetailsService {
     return this.http.post<FilterData<GoalDetail[]>>(url, filter);
   }
 
+  getGoalDetail(listId: number, id: number): Observable<GoalDetail>{
+    const url: string = `${endpoints.baseUrl}${endpoints.listDetails}${listId}/${id}`;
+    return this.http.get<GoalDetail>(url);
+  }
 
+  // uploadGoalDetailImage(listId: number, id: number): Observable<GoalDetail>{
+  //   const url: string = `${endpoints.baseUrl}${endpoints.listDetails}${listId}/update-image/${id}`;
+  //   return this.http.post<GoalDetail>(url);
+  // }
 
 }

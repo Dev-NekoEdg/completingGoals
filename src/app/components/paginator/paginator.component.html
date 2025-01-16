@@ -1,0 +1,21 @@
+<div>
+  <div>
+    <select [value]="currentSize()" class="form-select" >
+      @for(v of selectPageSizes(); track v ){
+        <option value="{{v}}">{{v}}</option>
+      }
+    </select>
+  </div>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item">
+        <a class="page-link">Previous</a>
+      </li>
+      @for(p of pages(); track p){
+        <li class="page-item">
+          <button class="page-link" (click)="changeCurrentPage(p)">{{p}}</button>
+        </li>
+      }
+    </ul>
+  </nav>
+</div>
