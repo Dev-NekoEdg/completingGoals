@@ -70,16 +70,25 @@ export class EditGoalDetailComponent implements OnInit {
     $(this.modal?.nativeElement).modal('show');
   }
 
-
   public closeModal(): void {
     $(this.modal?.nativeElement).modal('hide');
   }
 
-  private saveChanges() {
+  saveChanges() {
+    // TODO: obtener el valor del formulario que se esta modificando
+    console.log(this.goalDetail());
 
+    this.service.updateGoalDetail(this.goalDetail()).subscribe({
+      next: (data: GoalDetail) => {
+        this.goalDetail.set(data);
+      },
+      error: (err) => {
+        console.log(err)
+      }
+    });
   }
 
-  private createFrom():FormGroup {
+  private createFrom(): FormGroup {
     return this.builder.group({
       name: ['', Validators.required],
       description: [''],
@@ -88,7 +97,7 @@ export class EditGoalDetailComponent implements OnInit {
     });
   }
 
-  private loadForm(){
+  private loadForm() {
     this.myForm.get('name')?.setValue(this.goalDetail().name);
     this.myForm.get('description')?.setValue(this.goalDetail().description);
     // this.myForm.get('name')?.setValue(this.goalDetail().);
@@ -102,7 +111,7 @@ export class EditGoalDetailComponent implements OnInit {
     }
   }
 
-  public updateImageOnly(){
+  public updateImageOnly() {
 
     if (!this.uploadFile) {
       alert('Choose a file to upload first');
@@ -110,10 +119,21 @@ export class EditGoalDetailComponent implements OnInit {
     }
 
     const formData = new FormData();
-    formData.append(this.uploadFile.name, this.uploadFile);
+    // primer parametro es el nombre del parametro en el API.
+    formData.append('image', this.uploadFile, this.uploadFile.name);
 
-    console.log({'uploadFile':this.uploadFile});
+    console.log({ 'uploadFile': this.uploadFile });
+    this.service
+      .uploadGoalDetailImage(this.goalDetail().listId, this.goalDetail().id, formData)
+      .subscribe({
+        next: (data: boolean) => {
 
+          console.log(data);
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      });
   }
 
 }

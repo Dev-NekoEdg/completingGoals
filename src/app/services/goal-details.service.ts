@@ -28,9 +28,15 @@ export class GoalDetailsService {
     return this.http.get<GoalDetail>(url);
   }
 
-  // uploadGoalDetailImage(listId: number, id: number): Observable<GoalDetail>{
-  //   const url: string = `${endpoints.baseUrl}${endpoints.listDetails}${listId}/update-image/${id}`;
-  //   return this.http.post<GoalDetail>(url);
-  // }
+  uploadGoalDetailImage(listId: number, id: number, formData: FormData): Observable<boolean>{
+    const url: string = `${endpoints.baseUrl}${endpoints.listDetails}${listId}/update-image/${id}`;
+    return this.http.post<boolean>(url,formData);
+  }
+
+  updateGoalDetail(goalDetail: GoalDetail): Observable<GoalDetail>{
+    const url: string = `${endpoints.baseUrl}${endpoints.listDetails}${goalDetail.listId}/${goalDetail.id}`;
+
+    return this.http.put<GoalDetail>(url, goalDetail);
+  }
 
 }
