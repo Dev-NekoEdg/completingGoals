@@ -5,5 +5,5 @@ export interface GoalDetail {
   imageUrl: string;
   listId: number;
   listName? : string;
-  completed: boolean;
+  complete: boolean;
 }

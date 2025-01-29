@@ -13,7 +13,7 @@ const $: any = window['$'];
 })
 export class EditGoalDetailComponent implements OnInit {
 
-  goalDetail = signal<GoalDetail>({ id: 0, name: '', description: '', listId: 0, imageUrl: '', completed: false });
+  goalDetail = signal<GoalDetail>({ id: 0, name: '', description: '', listId: 0, imageUrl: '', complete: false });
   public goalId: number;
   public goalDetailId: number;
   // @Input() goalId: number = 0;
@@ -40,6 +40,11 @@ export class EditGoalDetailComponent implements OnInit {
 
   }
 
+  ngOnChanges() {
+    console.log('ngAfterViewInit');
+    this.goalDetail();
+  }
+
   public loadDetails(listId: number, detailId: number) {
     // this.service.getGoalDetail(this.goalId, this.goalDetailId)
     this.service.getGoalDetail(listId, detailId)
@@ -52,7 +57,7 @@ export class EditGoalDetailComponent implements OnInit {
               description: data.description,
               listId: data.listId,
               imageUrl: data.imageUrl,
-              completed: data.completed,
+              complete: data.complete,
               listName: data.listName
             }
           });
@@ -75,7 +80,17 @@ export class EditGoalDetailComponent implements OnInit {
   }
 
   saveChanges() {
-    // TODO: obtener el valor del formulario que se esta modificando
+    const name: string = this.myForm.get('name')?.value;
+    const description: string = this.myForm.get('description')?.value;
+    const completed: boolean = this.myForm.get('completed')?.value;
+    console.log({'completed': this.myForm.get('completed')?.value});
+    this.goalDetail.update((goal) =>
+    ({
+      ...goal,
+      name: name,
+      description: description,
+      complete: completed
+    }));
     console.log(this.goalDetail());
 
     this.service.updateGoalDetail(this.goalDetail()).subscribe({
@@ -86,6 +101,7 @@ export class EditGoalDetailComponent implements OnInit {
         console.log(err)
       }
     });
+    this.closeModal();
   }
 
   private createFrom(): FormGroup {
@@ -101,7 +117,7 @@ export class EditGoalDetailComponent implements OnInit {
     this.myForm.get('name')?.setValue(this.goalDetail().name);
     this.myForm.get('description')?.setValue(this.goalDetail().description);
     // this.myForm.get('name')?.setValue(this.goalDetail().);
-    this.myForm.get('completed')?.setValue(this.goalDetail().completed);
+    this.myForm.get('completed')?.setValue(this.goalDetail().complete);
   }
 
 
@@ -126,14 +142,20 @@ export class EditGoalDetailComponent implements OnInit {
     this.service
       .uploadGoalDetailImage(this.goalDetail().listId, this.goalDetail().id, formData)
       .subscribe({
-        next: (data: boolean) => {
+        next: (data: string) => {
 
-          console.log(data);
+          this.goalDetail.update((goal) => {
+            return { ...goal, imageUrl: data }
+          });
+
+          console.log('aftetupdate signal');
+          console.log(this.goalDetail());
         },
         error: (err) => {
           console.log(err);
         }
       });
   }
+
 
 }

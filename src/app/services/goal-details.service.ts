@@ -17,25 +17,25 @@ export class GoalDetailsService {
   }
 
   getPaginatedDetails(listId: number, filter: FilterData<FilterParam>)
-  :Observable<FilterData<GoalDetail[]>> {
+    : Observable<FilterData<GoalDetail[]>> {
     const url: string = `${endpoints.baseUrl}${endpoints.listDetails}${listId}/filter`;
     console.log({ url });
     return this.http.post<FilterData<GoalDetail[]>>(url, filter);
   }
 
-  getGoalDetail(listId: number, id: number): Observable<GoalDetail>{
+  getGoalDetail(listId: number, id: number): Observable<GoalDetail> {
     const url: string = `${endpoints.baseUrl}${endpoints.listDetails}${listId}/${id}`;
     return this.http.get<GoalDetail>(url);
   }
 
-  uploadGoalDetailImage(listId: number, id: number, formData: FormData): Observable<boolean>{
+  uploadGoalDetailImage(listId: number, id: number, formData: FormData): Observable<string> {
     const url: string = `${endpoints.baseUrl}${endpoints.listDetails}${listId}/update-image/${id}`;
-    return this.http.post<boolean>(url,formData);
+    return this.http.post<string>(url, formData);
   }
 
-  updateGoalDetail(goalDetail: GoalDetail): Observable<GoalDetail>{
+  updateGoalDetail(goalDetail: GoalDetail): Observable<GoalDetail> {
     const url: string = `${endpoints.baseUrl}${endpoints.listDetails}${goalDetail.listId}/${goalDetail.id}`;
-
+    console.log({ 'service': goalDetail });
     return this.http.put<GoalDetail>(url, goalDetail);
   }
 

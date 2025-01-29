@@ -112,10 +112,10 @@ export class GoalDetailComponent implements OnInit {
   }
 
 // Editing Modal
-  open(){
-    this.modal?.loadDetails(2, 18);
-    this.modal?.openModal();
-  }
+  // open(){
+  //   this.modal?.loadDetails(2, 18);
+  //   this.modal?.openModal();
+  // }
 
   // Paginator
   changeCurrentPage(page: number) {
