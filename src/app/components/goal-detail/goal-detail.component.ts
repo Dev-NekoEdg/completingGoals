@@ -1,4 +1,4 @@
-import { Component, computed, ElementRef, inject, OnInit, signal, ViewChild, viewChild, WritableSignal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, SimpleChanges, ViewChild, viewChild, WritableSignal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GoalDetailsService } from '../../services/goal-details.service';
 import { FilterData, FilterParam } from '../../models/filterData';
@@ -69,6 +69,11 @@ export class GoalDetailComponent implements OnInit {
     this.loadGoals(+this.listId);
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
+    console.log('-'.repeat(10));
+  }
+
   loadGoals(listId: number) {
 
     this.service.getPaginatedDetails(listId, this.filter()).subscribe({
@@ -111,18 +116,17 @@ export class GoalDetailComponent implements OnInit {
     this.modal?.openModal();
   }
 
-// Editing Modal
-  // open(){
-  //   this.modal?.loadDetails(2, 18);
-  //   this.modal?.openModal();
-  // }
+  changeState(event: Event) {
+    console.log({ 'changeState': event });
+    this.loadGoals(this.listId);
+  }
 
   // Paginator
   changeCurrentPage(page: number) {
     this.currentPage.set(page);
     console.log(this.currentPage());
   }
-  changeSelection(){
+  changeSelection() {
     console.log(this.currentSize());
 
   }

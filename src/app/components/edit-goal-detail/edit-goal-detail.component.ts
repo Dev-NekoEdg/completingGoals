@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, Output, signal, ViewChild, viewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, signal, ViewChild, viewChild } from '@angular/core';
 import { GoalDetail } from '../../models/goal-detail';
 import { GoalDetailsService } from '../../services/goal-details.service';
 import { CommonModule } from '@angular/common';
@@ -20,6 +20,8 @@ export class EditGoalDetailComponent implements OnInit {
   // @Input() goalDetailId: number = 0;
   public myForm: FormGroup;
   public uploadFile: File | null = null;
+
+  @Output() updateObjects = new EventEmitter();
 
   @ViewChild('testModal') modal?: ElementRef;
 
@@ -101,6 +103,7 @@ export class EditGoalDetailComponent implements OnInit {
         console.log(err)
       }
     });
+    this.updateObjects.emit('update item');
     this.closeModal();
   }
 

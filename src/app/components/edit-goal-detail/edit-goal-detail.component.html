@@ -11,8 +11,6 @@
           <img src="{{goalDetail().imageUrl}}" class="h-50 w-50 img-thumbnail mx-auto d-block">
         </div>
         <form [formGroup]="myForm">
-          <p>ListId: {{goalDetail().listId}}</p>
-          <p>Id: {{goalDetail().id}}</p>
           <div class="mb-3 row">
             <label class="col-sm-3 col-form-label">Nombre:</label>
             <div class="col-sm-9">
@@ -53,9 +51,6 @@
             </div>
           </div>
         </form>
-        <pre>
-          {{goalDetail() | json }}
-        </pre>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
