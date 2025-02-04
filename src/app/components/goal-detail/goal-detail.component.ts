@@ -11,7 +11,7 @@ import { EditGoalDetailComponent } from "../edit-goal-detail/edit-goal-detail.co
 
 @Component({
   selector: 'app-goal-detail',
-  imports: [EditGoalDetailComponent],
+  imports: [EditGoalDetailComponent, PaginatorComponent],
   templateUrl: './goal-detail.component.html',
   styleUrl: './goal-detail.component.css'
 })
@@ -116,6 +116,21 @@ export class GoalDetailComponent implements OnInit {
     this.modal?.openModal();
   }
 
+  completeGoal(detail: GoalDetail) {
+    detail.complete = true;
+    this.service.updateGoalDetail(detail).subscribe({
+      next: (data: GoalDetail) => {
+        console.log({ 'updatedObject': data });
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
+
+  }
+
+
+
   changeState(event: Event) {
     console.log({ 'changeState': event });
     this.loadGoals(this.listId);
@@ -128,7 +143,6 @@ export class GoalDetailComponent implements OnInit {
   }
   changeSelection() {
     console.log(this.currentSize());
-
   }
 
 }

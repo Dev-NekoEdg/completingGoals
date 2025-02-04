@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, signal, WritableSignal } from '@angular/core';
 
 import { FilterData } from '../../models/filterData'
 import { pagination } from '../../customConfig';
@@ -11,9 +11,9 @@ import { pagination } from '../../customConfig';
 })
 export class PaginatorComponent implements OnInit {
 
-  pages: WritableSignal<number[]> = signal([]);
   selectPageSizes = signal<number[]>(pagination.sizes);
-  currentSize: WritableSignal<number> = signal(pagination.defaultSize);
+  currentSize = signal(pagination.defaultSize);
+  pages = signal<number[]>([]);
 
   defaultFilter: FilterData<any> = {
     currentPage: 0,
@@ -23,21 +23,24 @@ export class PaginatorComponent implements OnInit {
     data: null
   };
 
-  @Input() filter: WritableSignal<FilterData<any>> = signal(this.defaultFilter);
+  @Input({required:true}) quantityPages!: number;
+  @Output() updateObjects = new EventEmitter();
 
   ngOnInit(): void {
+    console.log('oninit paginator');
     this.loadPages();
   }
 
   loadPages() {
-console.log({'filter-pages':this.filter().pages});
-this.pages.set(new Array(this.filter().pages));
-console.log({'pages':this.pages()});
 
+    const x: number[] = Array.from({ length: this.quantityPages }, (value, index) => index + 1);
+    console.log({ 'pages': x });
+    this.pages.set(x);
   }
-  changeCurrentPage(page: number) {
-    this.currentSize.set(page);
 
+  changeCurrentPage(page: number) {
+
+    this.currentSize.set(page);
   }
 
 
