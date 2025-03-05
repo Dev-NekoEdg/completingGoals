@@ -1,7 +1,7 @@
 import { Component, computed, inject, OnInit, signal, SimpleChanges, ViewChild, viewChild, WritableSignal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GoalDetailsService } from '../../services/goal-details.service';
-import { FilterData, FilterParam } from '../../models/filterData';
+import { FilterData, FilterParam, PaginatorEmit } from '../../models/filterData';
 import { imageDefault, pagination } from '../../customConfig';
 import { GoalDetail } from '../../models/goal-detail';
 import { PaginatorComponent } from '../paginator/paginator.component';
@@ -19,6 +19,8 @@ export class GoalDetailComponent implements OnInit {
 
   public goalDetails = signal<GoalDetail[]>([]);
 
+  pages = signal<number>(0);
+
   listId: number;
   router: ActivatedRoute;
   filter: WritableSignal<FilterData<FilterParam>>;
@@ -32,22 +34,6 @@ export class GoalDetailComponent implements OnInit {
     }
     return false;
   });
-
-  public pages = computed(() => {
-    const pages = this.filter().pages
-    if (pages >= 0) {
-      //const x:number[] = new Array(pages);
-      const x: number[] = Array.from({ length: pages }, (value, index) => index + 1);
-      console.log({ 'pages': x });
-      return x;
-    }
-    return [];
-  });
-
-  // paginator
-  selectPageSizes = signal<number[]>(pagination.sizes);
-  currentSize = signal<number>(pagination.defaultSize);
-  currentPage = signal<number>(1);
 
   // Modal editing
   @ViewChild(EditGoalDetailComponent) modal?: EditGoalDetailComponent;
@@ -67,6 +53,7 @@ export class GoalDetailComponent implements OnInit {
   ngOnInit(): void {
     this.listId = this.router.snapshot.params['listId'];
     this.loadGoals(+this.listId);
+    this.pages.set(this.filter().pageSize);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -137,12 +124,48 @@ export class GoalDetailComponent implements OnInit {
   }
 
   // Paginator
-  changeCurrentPage(page: number) {
-    this.currentPage.set(page);
-    console.log(this.currentPage());
-  }
-  changeSelection() {
-    console.log(this.currentSize());
+  changeSelection(event: PaginatorEmit) {
+    this.filter.update((f) => {
+      return {
+        ...f,
+        currentPage: event.currentPage,
+        pageSize: event.pageSize,
+        data: null
+      }
+    });
+    // console.log('changeSelection: ' + this.listId);
+    // console.log({'filter': this.filter()});
+    this.service.getPaginatedDetails(this.listId, this.filter()).subscribe({
+      next: (data: FilterData<GoalDetail[]>) => {
+        console.log({ data });
+
+        this.filter.update((f) => {
+          return {
+            currentPage: data.currentPage,
+            pages: data.pages,
+            pageSize: data.pageSize,
+            totalRecords: data.totalRecords,
+            data: f.data
+          }
+        });
+
+        if (data.data === null || data.data === undefined || data.data.length <= 0) {
+          this.goalDetails.set([]);
+        } else {
+          data.data.map((detail) => {
+            if (detail.imageUrl === '' || detail.imageUrl === null) {
+              detail.imageUrl = imageDefault.imageNotFound;
+            }
+          })
+          this.goalDetails.set(data.data);
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+
+
   }
 
 }

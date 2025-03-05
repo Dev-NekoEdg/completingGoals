@@ -21,7 +21,7 @@
 </div>
 
 <div class="mt-3">
-  <app-paginator [quantityPages]="filter().pages"></app-paginator>
+  <app-paginator [quantityPages]="pages" (updateObjects)="changeSelection($event)"></app-paginator>
   <!-- <div>
     <div>
       <select [value]="currentSize()" (change)="changeSelection()" class="form-select">

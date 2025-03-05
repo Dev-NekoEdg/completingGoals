@@ -1,9 +1,11 @@
 <div>
   <div>
-    <select [value]="currentSize()" class="form-select" >
-      @for(v of selectPageSizes(); track v ){
-        <option value="{{v}}">{{v}}</option>
-      }
+    <select [value]="currentSize()"
+      class="form-select"
+      (change)="onSelectChange($event)">
+      <option *ngFor="let option of selectPageSizes()" [value]="option">
+        {{ option }}
+      </option>
     </select>
   </div>
   <nav aria-label="Page navigation example">

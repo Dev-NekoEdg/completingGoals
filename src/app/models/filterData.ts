@@ -12,3 +12,8 @@ export interface FilterParam{
   field:string;
   value:string;
 }
+
+export interface PaginatorEmit{
+  currentPage: number;
+  pageSize: number;
+}
