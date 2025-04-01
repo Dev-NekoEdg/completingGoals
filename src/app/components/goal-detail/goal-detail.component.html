@@ -2,7 +2,9 @@
   Id lista : {{listId}}
   modal: {{goalDetailsActived()}}
 </p>
-
+<p>
+  pages 2:  {{filter().pages}}
+</p>
 <div class="row row-cols-1 row-cols-md-3 g-4">
   @for(detail of goalDetails(); track detail.id){
   <div class="col">
@@ -21,7 +23,7 @@
 </div>
 
 <div class="mt-3">
-  <app-paginator [quantityPages]="pages" (updateObjects)="changeSelection($event)"></app-paginator>
+  <app-paginator [quantityPages]="filter().pages" (updateObjects)="changeSelection($event)"></app-paginator>
   <!-- <div>
     <div>
       <select [value]="currentSize()" (change)="changeSelection()" class="form-select">

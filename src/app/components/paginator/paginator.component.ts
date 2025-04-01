@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, signal, WritableSignal } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, Signal, signal, SimpleChanges, WritableSignal } from '@angular/core';
 
 import { FilterData, PaginatorEmit } from '../../models/filterData'
 import { pagination } from '../../customConfig';
@@ -13,8 +13,8 @@ import { CommonModule } from '@angular/common';
 export class PaginatorComponent implements OnInit {
 
   selectPageSizes = signal<number[]>(pagination.sizes);
-  currentSize = signal(pagination.defaultSize);
-  selectedPage = signal<number>(0);
+  currentSize = signal(0);
+  selectedPage = signal<number>(1);
   pages = signal<number[]>([]);
 
   defaultFilter: FilterData<any> = {
@@ -25,7 +25,8 @@ export class PaginatorComponent implements OnInit {
     data: null
   };
 
-  @Input({required:true}) quantityPages!: WritableSignal<number>;
+  // @Input({ required: true }) quantityPages!: Signal<number>;
+  @Input({ required: true }) quantityPages!: number;
   @Output() updateObjects = new EventEmitter();
 
   ngOnInit(): void {
@@ -33,9 +34,19 @@ export class PaginatorComponent implements OnInit {
     this.loadPages();
   }
 
-  loadPages() {
+  ngAfterViewInit() {
+    this.currentSize.set(pagination.defaultSize);
+  }
 
-    const x: number[] = Array.from({ length: this.quantityPages() }, (value, index) => index + 1);
+  ngOnChanges(changes: SimpleChanges){
+    console.log('paginator - onChanges');
+    console.log(changes);
+
+    this.loadPages();
+  }
+
+  loadPages() {
+    const x: number[] = Array.from({ length: this.quantityPages }, (value, index) => index + 1);
     console.log({ 'pages': x });
     this.pages.set(x);
   }
@@ -43,18 +54,36 @@ export class PaginatorComponent implements OnInit {
   changeCurrentPage(page: number) {
     this.selectedPage.set(page);
     console.log('selectedPage = ' + this.selectedPage());
-    const pagenator:PaginatorEmit = {
-      currentPage : this.selectedPage(),
+    const pagenator: PaginatorEmit = {
+      currentPage: this.selectedPage(),
       pageSize: this.currentSize()
     };
     this.updateObjects.emit(pagenator);
   }
 
+  changeCurrentPageByArrowButtons(action: string) {
+    this.selectedPage.update(p => {
+      if(action === '-' && p  > 1 ){
+        return p--;
+      }else{
+        return p++;
+      }
+    });
+    console.log('changeCurrentPageByArrowButtons');
+    console.log('selectedPage = ' + this.selectedPage());
+    const pagenator: PaginatorEmit = {
+      currentPage: this.selectedPage(),
+      pageSize: this.currentSize()
+    };
+    this.updateObjects.emit(pagenator);
+  }
+
+
   onSelectChange(event: Event) {
     const target = event.target as HTMLSelectElement;
     this.currentSize.set(+target.value);
-    const pagenator:PaginatorEmit = {
-      currentPage : this.selectedPage(),
+    const pagenator: PaginatorEmit = {
+      currentPage: this.selectedPage(),
       pageSize: this.currentSize()
     };
     this.updateObjects.emit(pagenator);

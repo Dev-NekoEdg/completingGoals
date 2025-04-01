@@ -19,7 +19,6 @@ export class GoalDetailComponent implements OnInit {
 
   public goalDetails = signal<GoalDetail[]>([]);
 
-  pages = signal<number>(0);
 
   listId: number;
   router: ActivatedRoute;
@@ -34,6 +33,16 @@ export class GoalDetailComponent implements OnInit {
     }
     return false;
   });
+
+  public pages = signal<number>(0);
+  // public pages = computed(() => {
+  //   const pages = this.filter().pages;
+  //   if (pages > 0) {
+  //     console.log('computed pages: '+pages );
+  //     return pages;
+  //   }
+  //   return 1;
+  // });
 
   // Modal editing
   @ViewChild(EditGoalDetailComponent) modal?: EditGoalDetailComponent;
@@ -53,12 +62,12 @@ export class GoalDetailComponent implements OnInit {
   ngOnInit(): void {
     this.listId = this.router.snapshot.params['listId'];
     this.loadGoals(+this.listId);
-    this.pages.set(this.filter().pageSize);
+    // this.pages.set(this.filter().pageSize);
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log('goalDetails - onChanges');
     console.log(changes);
-    console.log('-'.repeat(10));
   }
 
   loadGoals(listId: number) {
@@ -76,6 +85,7 @@ export class GoalDetailComponent implements OnInit {
             data: f.data
           }
         });
+        this.pages.set(data.pages);
 
         if (data.data === null || data.data === undefined || data.data.length <= 0) {
           this.goalDetails.set([]);
@@ -92,6 +102,8 @@ export class GoalDetailComponent implements OnInit {
         console.log(err);
       }
     });
+    console.log({ 'pages': this.pages() })
+
   }
 
   changeSelectedGoalDetail(id: number): void {
@@ -164,7 +176,7 @@ export class GoalDetailComponent implements OnInit {
         console.log(err);
       }
     });
-
+    console.log({ 'pages': this.pages() })
 
   }
 

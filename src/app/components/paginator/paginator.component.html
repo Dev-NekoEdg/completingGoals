@@ -11,13 +11,30 @@
   <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
       <li class="page-item">
-        <a class="page-link">Previous</a>
+        <button class="page-link" [class.disabled]="selectedPage() == 1"
+        (click)="changeCurrentPageByArrowButtons('-')" > &laquo; </button>
       </li>
-      @for(p of pages(); track p){
+      @if(selectedPage() > 18){
         <li class="page-item">
-          <button class="page-link" (click)="changeCurrentPage(p)">{{p}}</button>
+          <button class="page-link" disabled> ... </button>
         </li>
       }
+      @for(p of pages(); track p){
+        <li class="page-item">
+          <button class="page-link"
+          [class.active]="p===selectedPage() "
+          (click)="changeCurrentPage(p)">{{p}}</button>
+        </li>
+      }
+      @if(pages().length > 20){
+        <li class="page-item">
+          <button class="page-link" disabled> ... </button>
+        </li>
+      }
+      <li class="page-item">
+        <button class="page-link" [class.disabled]="selectedPage() === quantityPages"
+        (click)="changeCurrentPageByArrowButtons('+')" > &raquo; </button>
+      </li>
     </ul>
   </nav>
 </div>
