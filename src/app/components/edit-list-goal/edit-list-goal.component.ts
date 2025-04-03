@@ -1,40 +1,54 @@
-import { Component, ElementRef, Input, signal, ViewChild, WritableSignal } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, signal, ViewChild, WritableSignal } from '@angular/core';
 import { Goals } from '../../models/goals';
-
+import { FormsModule } from '@angular/forms';
+import { GoalService } from '../../services/goal.service';
 // @ts-ignore
 const $: any = window['$'];
+
 @Component({
   selector: 'app-edit-list-goal',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './edit-list-goal.component.html',
   styleUrl: './edit-list-goal.component.css'
 })
 export class EditListGoalComponent {
 
-  @ViewChild('testModal') modal?: ElementRef;
-  @Input() listGoal?: Goals;
+  @ViewChild('editListModal') modal?: ElementRef;
+  @Output() updateObjects = new EventEmitter();
 
-  newName: WritableSignal<string> = signal('');
+  listGoal: WritableSignal<Goals> = signal({id:0, name:''});;
+  newName:string = '';
 
-constructor() {
-  if(this.listGoal?.name === null || this.listGoal?.name === undefined){
-    this.newName.set('');
+  constructor(private service: GoalService) {
   }
-  else{
-    this.newName.set(this.listGoal?.name );
+
+  onInit(){
+    //this.newName = this.listGoal?.name;
   }
-}
 
-public openModal(): void {
-  $(this.modal?.nativeElement).modal('show');
-}
+  public openModal(): void {
+    $(this.modal?.nativeElement).modal('show');
+  }
 
-public closeModal(): void {
-  $(this.modal?.nativeElement).modal('hide');
-}
+  public closeModal(): void {
+    $(this.modal?.nativeElement).modal('hide');
+  }
 
-saveChanges(){
-
-}
+  saveChanges() {
+    const newGoal: Goals = {
+      id: this.listGoal().id,
+      name: this.newName
+    }
+    this.service.updateGoal(newGoal).subscribe(
+      {
+        next: (data: Goals) => {
+          this.updateObjects.emit('OK');
+          this.closeModal();
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      });
+  }
 
 }

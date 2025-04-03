@@ -3,7 +3,14 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">{{listGoal?.name}}</h1>
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">
+          @if (listGoal().id !== 0) {
+            Id: {{listGoal().id}}
+          }
+          @else{
+            Nuva lista de objetivos
+          }
+        </h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -11,7 +18,7 @@
             <label class="col-sm-3 col-form-label">Nombre:</label>
             <div class="col-sm-9">
               <input type="text" class="form-control"
-              value="[(newName())]"
+              [(ngModel)]="newName"
               >
             </div>
           </div>

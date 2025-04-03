@@ -23,7 +23,7 @@ export class EditGoalDetailComponent implements OnInit {
 
   @Output() updateObjects = new EventEmitter();
 
-  @ViewChild('editListModal') modal?: ElementRef;
+  @ViewChild('testModal') modal?: ElementRef;
 
   constructor(private service: GoalDetailsService,
     private builder: FormBuilder

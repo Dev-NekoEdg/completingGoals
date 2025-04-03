@@ -1,14 +1,6 @@
-<p>home works!</p>
-<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editDetailModal">
-  Launch demo modal
-</button> -->
-
-<input type="button" class="btn btn-primary" value="Open modal"
-(click)="open()"
->
-
-<!-- Modal -->
-<!-- <div class="modal fade" data-bs-toggle="modal" id="exampleModal" tabindex="-1"  >
+<div #homeModal class="modal fade" id="homeModal"
+  tabindex="-1" aria-labelledby="homeModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -19,10 +11,10 @@
         ...
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary"
+          data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
-</div> -->
-<app-modal-home />
+</div>

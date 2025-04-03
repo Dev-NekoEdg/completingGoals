@@ -26,12 +26,17 @@ export class GoalService {
 
   getPaginatedDetails(filter: FilterData<FilterParam>)
     : Observable<FilterData<Goals[]>> {
-    const url: string = `${endpoints.baseUrl}${endpoints.list}/filter`;
+    const url: string = `${endpoints.baseUrl}${endpoints.list}filter`;
     return this.http.post<FilterData<Goals[]>>(url, filter);
   }
 
   addGoal(newGoal: Goals): Observable<Goals> {
     const url: string = `${endpoints.baseUrl}${endpoints.list}`
     return this.http.post<Goals>(url, newGoal);
+  }
+
+  updateGoal(newGoal: Goals): Observable<Goals> {
+    const url: string = `${endpoints.baseUrl}${endpoints.list}${newGoal.id}`
+    return this.http.put<Goals>(url, newGoal);
   }
 }
