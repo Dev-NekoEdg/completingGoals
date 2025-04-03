@@ -51,8 +51,10 @@ export class PaginatorComponent implements OnInit {
     this.pages.set(x);
   }
 
-  changeCurrentPage(page: number) {
-    this.selectedPage.set(page);
+  changeCurrentPage(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    this.selectedPage.set(+target.value);
+
     console.log('selectedPage = ' + this.selectedPage());
     const pagenator: PaginatorEmit = {
       currentPage: this.selectedPage(),
@@ -60,28 +62,12 @@ export class PaginatorComponent implements OnInit {
     };
     this.updateObjects.emit(pagenator);
   }
-
-  changeCurrentPageByArrowButtons(action: string) {
-    this.selectedPage.update(p => {
-      if(action === '-' && p  > 1 ){
-        return p--;
-      }else{
-        return p++;
-      }
-    });
-    console.log('changeCurrentPageByArrowButtons');
-    console.log('selectedPage = ' + this.selectedPage());
-    const pagenator: PaginatorEmit = {
-      currentPage: this.selectedPage(),
-      pageSize: this.currentSize()
-    };
-    this.updateObjects.emit(pagenator);
-  }
-
 
   onSelectChange(event: Event) {
     const target = event.target as HTMLSelectElement;
     this.currentSize.set(+target.value);
+    this.selectedPage.set(1);
+
     const pagenator: PaginatorEmit = {
       currentPage: this.selectedPage(),
       pageSize: this.currentSize()

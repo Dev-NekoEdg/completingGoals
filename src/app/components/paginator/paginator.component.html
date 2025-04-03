@@ -1,14 +1,35 @@
 <div>
-  <div>
+
+  <div class="row w-100 text-center m-1">
+    <div class="col-md-6">
+      <label class="form-label w-100 text-end"># Elementos: </label>
+    </div>
+    <div class="col-md-6">
+
     <select [value]="currentSize()"
-      class="form-select"
+      class="form-select w-25"
       (change)="onSelectChange($event)">
       <option *ngFor="let option of selectPageSizes()" [value]="option">
         {{ option }}
       </option>
     </select>
+    </div>
   </div>
-  <nav aria-label="Page navigation example">
+  <div class="row w-100 text-center m-1">
+    <label class="col-md-6 text-end">
+      # P&aacute;gina:
+    </label>
+    <div class="col-md-6">
+      <select [value]="selectedPage()"
+      class="form-select w-25"
+      (change)="changeCurrentPage($event)">
+      <option *ngFor="let option of pages()" [value]="option">
+        {{ option }}
+      </option>
+    </select>
+  </div>
+  </div>
+  <!-- <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
       <li class="page-item">
         <button class="page-link" [class.disabled]="selectedPage() == 1"
@@ -22,11 +43,12 @@
       @for(p of pages(); track p){
         <li class="page-item">
           <button class="page-link"
-          [class.active]="p===selectedPage() "
+          *ngIf="p < 20 || selectedPage() < 20"
+          [class.active]="p===selectedPage()"
           (click)="changeCurrentPage(p)">{{p}}</button>
         </li>
       }
-      @if(pages().length > 20){
+      @if(quantityPages > 20){
         <li class="page-item">
           <button class="page-link" disabled> ... </button>
         </li>
@@ -36,5 +58,5 @@
         (click)="changeCurrentPageByArrowButtons('+')" > &raquo; </button>
       </li>
     </ul>
-  </nav>
+  </nav> -->
 </div>

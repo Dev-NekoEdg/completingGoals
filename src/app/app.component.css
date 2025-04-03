@@ -1,10 +1,20 @@
 .mainNavbar {
-padding-left: 15%;
-padding-right: 15%;
-background-color: #3092d7;
+  padding-left: 15%;
+  padding-right: 15%;
+  background-color: #3092d7;
 }
 
-.mainContainer{
+.mainContainer {
   margin-left: 15%;
   margin-right: 15%;
+  margin-bottom: 3%;
+}
+
+.footerCustom {
+  margin-top: 5%;
+  width: 100%;
+  text-align: center;
+  background-color: #3092d7;
+  position: absolute;
+  bottom: 0;
 }
