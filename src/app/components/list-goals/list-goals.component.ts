@@ -116,6 +116,7 @@ export class ListGoalsComponent implements OnInit {
     this.selectedGoal.set(listgoal)
     //this.modal?.newName.set(listgoal.name);
     this.modal?.listGoal.set(listgoal);
+    this.modal?.newName.set(listgoal.name);
     this.modal?.openModal();
   }
 
