@@ -13,9 +13,15 @@
       <div class="card-body">
         <h5 class="card-title">{{detail.name}}</h5>
         <p class="card-text">{{detail.description}}</p>
-        <input class="btn btn-primary" [disabled]="detail.complete" value="Completar"
-          (click)="completeGoal(detail)"
-        >
+        <div class="text-center">
+          <input 
+          class="btn"
+          [class.btn-success]="detail.complete"
+          [class.btn-primary]="!detail.complete"
+          [disabled]="detail.complete"
+           value="Completar"
+          (click)="completeGoal(detail)" >
+        </div>
       </div>
     </div>
   </div>

@@ -1,5 +1,19 @@
-import { Component, OnInit, signal, Signal, inject, WritableSignal, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms'
+import {
+  Component,
+  OnInit,
+  signal,
+  Signal,
+  inject,
+  WritableSignal,
+  ViewChild,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Goals } from '../../models/goals';
 import { CommonModule } from '@angular/common';
 import { FilterData, FilterParam } from '../../models/filterData';
@@ -13,14 +27,17 @@ import { EditListGoalComponent } from '../edit-list-goal/edit-list-goal.componen
 @Component({
   selector: 'app-list-goals',
   // modulo para los formularios reactivos.
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, EditListGoalComponent, PaginatorComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    EditListGoalComponent,
+    PaginatorComponent,
+  ],
   templateUrl: './list-goals.component.html',
-  styleUrl: './list-goals.component.css'
+  styleUrl: './list-goals.component.css',
 })
-
 export class ListGoalsComponent implements OnInit {
-
-
   searchForm: FormGroup;
   searchType: string;
   searchValue: FormControl;
@@ -50,9 +67,8 @@ export class ListGoalsComponent implements OnInit {
 
     this.searchForm = this.builder.group({
       typeSearch: [''],
-      valueSearch: ['']
+      valueSearch: [''],
     });
-
   }
 
   ngOnInit(): void {
@@ -69,42 +85,63 @@ export class ListGoalsComponent implements OnInit {
   }
 
   loadListGoals() {
-    this.service.getPaginatedDetails(this.filter())
-      .subscribe({
-        next: (data: FilterData<Goals[]>) => {
-          this.filter.update((f) => {
-            return {
-              currentPage: data.currentPage,
-              pages: data.pages,
-              pageSize: data.pageSize,
-              totalRecords: data.totalRecords,
-              data: f.data
-            }
-          });
-          if (data.data === null || data.data === undefined || data.data.length <= 0) {
-            this.goalsList.set([]);
-          }
-          else {
-            this.goalsList.set(data.data);
-          }
-        },
-        error: (err) => {
-          console.log(err);
+    this.service.getPaginatedDetails(this.filter()).subscribe({
+      next: (data: FilterData<Goals[]>) => {
+        this.filter.update((f) => {
+          return {
+            currentPage: data.currentPage,
+            pages: data.pages,
+            pageSize: data.pageSize,
+            totalRecords: data.totalRecords,
+            data: f.data,
+          };
+        });
+        if (
+          data.data === null ||
+          data.data === undefined ||
+          data.data.length <= 0
+        ) {
+          this.goalsList.set([]);
+        } else {
+          this.goalsList.set(data.data);
         }
-      });
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 
   CreateSearchForm(): void {
     this.searchForm = this.builder.group({
       typeSearch: [''],
-      valueSearch: ['']
+      valueSearch: [''],
     });
   }
 
   searchGoal() {
     console.log(this.searchType);
     console.log(this.searchValue.value);
-    console.log(this.searchForm.controls);
+    console.log(this.searchValue.value.length <= 0);
+    this.filter.update((f) => {
+      let innerFilter: FilterParam | null = null;
+
+      if (this.searchValue.value !== '' ) {
+        innerFilter = { field: this.searchType, value: this.searchValue.value };
+      }
+
+      return {
+        currentPage: 1,
+        pageSize: pagination.defaultSize,
+        pages: 0,
+        totalRecords: 0,
+        data: innerFilter,
+      };
+    });
+    console.log('filtro actualizado');
+    console.log(this.filter());
+
+    this.loadListGoals();
   }
 
   selectSearchType(search: string): void {
@@ -113,7 +150,7 @@ export class ListGoalsComponent implements OnInit {
   }
 
   editName(listgoal: Goals): void {
-    this.selectedGoal.set(listgoal)
+    this.selectedGoal.set(listgoal);
     //this.modal?.newName.set(listgoal.name);
     this.modal?.listGoal.set(listgoal);
     this.modal?.newName.set(listgoal.name);
@@ -125,14 +162,14 @@ export class ListGoalsComponent implements OnInit {
   }
 
   changeSelection($event: Event) {
-    console.log({'changeState': event });
+    console.log({ changeState: event });
     this.loadListGoals();
   }
 
   addNewList() {
     const newGoal: Goals = {
       id: 0,
-      name: ''
+      name: '',
     };
     this.modal?.listGoal.set(newGoal);
     this.modal?.openModal();
@@ -150,13 +187,8 @@ export class ListGoalsComponent implements OnInit {
   validateUpdate(event: string) {
     if (event === 'OK') {
       this.loadListGoals();
-    }
-    else {
+    } else {
       //mostrar error;
     }
   }
-
-
-
-
 }

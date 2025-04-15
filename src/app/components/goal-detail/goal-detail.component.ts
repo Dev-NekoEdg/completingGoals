@@ -6,12 +6,13 @@ import { imageDefault, pagination } from '../../customConfig';
 import { GoalDetail } from '../../models/goal-detail';
 import { PaginatorComponent } from '../paginator/paginator.component';
 import { EditGoalDetailComponent } from "../edit-goal-detail/edit-goal-detail.component";
+import { NgClass } from '@angular/common';
 
 
 
 @Component({
   selector: 'app-goal-detail',
-  imports: [EditGoalDetailComponent, PaginatorComponent],
+  imports: [EditGoalDetailComponent, PaginatorComponent, NgClass],
   templateUrl: './goal-detail.component.html',
   styleUrl: './goal-detail.component.css'
 })
