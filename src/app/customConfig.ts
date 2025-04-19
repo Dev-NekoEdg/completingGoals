@@ -13,5 +13,6 @@ export const endpoints = {
 }
 
 export const imageDefault = {
-  imageNotFound: 'https://storedatanekoedg.blob.core.windows.net/public-container/goalsList/imageNotFound.png'
+  imageNotFound_BlobStorage: 'https://storedatanekoedg.blob.core.windows.net/public-container/goalsList/imageNotFound.png',
+  imageNotFound: 'assets/ai_imageNotFound.png'
 }

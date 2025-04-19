@@ -37,24 +37,33 @@
               </div>
             </div>
           </div>
-          <hr>
-          <div class="mb-3 row">
-            <div class="col-sm-12">
-              <div class="input-group">
-                <input type="file" class="form-control"
+          @if(!isNewRegister){
+            <hr>
+            <div class="mb-3 row">
+              <div class="col-sm-12">
+                <div class="input-group">
+                  <input type="file" class="form-control"
                   (change)="handleFileInput($any($event.target).files)"
                   aria-label="U-pload">
-                <input class="btn btn-outline-primary" type="button"
-                (click)="updateImageOnly()"
+                  <input class="btn btn-outline-primary" type="button"
+                  (click)="updateImageOnly()"
                   value="Subir Imagen">
+                </div>
               </div>
             </div>
-          </div>
+          }
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="saveChanges()">Update</button>
+        <button type="button" class="btn btn-primary" (click)="saveChanges()">
+          @if(isNewRegister){
+            Save
+          } 
+          @else{
+            Update
+          }
+        </button>
       </div>
     </div>
   </div>

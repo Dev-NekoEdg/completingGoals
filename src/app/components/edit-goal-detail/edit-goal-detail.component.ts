@@ -18,6 +18,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { imageDefault } from '../../customConfig';
+import { ResponseDefault } from '../../models/response-default';
 // @ts-ignore
 const $: any = window['$'];
 @Component({
@@ -35,10 +37,10 @@ export class EditGoalDetailComponent implements OnInit {
     imageUrl: '',
     complete: false,
   });
-  public goalId: number;
+
+  public listId: number;
   public goalDetailId: number;
-  // @Input() goalId: number = 0;
-  // @Input() goalDetailId: number = 0;
+  public isNewRegister: boolean;
   public myForm: FormGroup;
   public uploadFile: File | null = null;
 
@@ -50,13 +52,14 @@ export class EditGoalDetailComponent implements OnInit {
     private service: GoalDetailsService,
     private builder: FormBuilder
   ) {
-    this.goalId = 0;
+    this.listId = 0;
     this.goalDetailId = 0;
+    this.isNewRegister = false;
     this.myForm = this.createFrom();
   }
 
   ngOnInit(): void {
-    if (this.goalId !== 0 && this.goalDetailId !== 0) {
+    if (this.listId !== 0 && this.goalDetailId !== 0) {
       this.goalDetail();
     }
   }
@@ -67,7 +70,7 @@ export class EditGoalDetailComponent implements OnInit {
   }
 
   public loadDetails(listId: number, detailId: number) {
-    // this.service.getGoalDetail(this.goalId, this.goalDetailId)
+    this.isNewRegister = false;
     this.service.getGoalDetail(listId, detailId).subscribe({
       next: (data: GoalDetail) => {
         this.goalDetail.update(() => {
@@ -91,6 +94,20 @@ export class EditGoalDetailComponent implements OnInit {
     });
   }
 
+  public loadNewDetails(listId: number, listName: string) {
+    this.isNewRegister = true;
+    this.goalDetail.set({
+      id: 0,
+      name: '',
+      description: '',
+      listId: listId,
+      imageUrl: 'assets/ai_newRegister.png',
+      complete: false,
+      listName: listName,
+    });
+    this.loadForm();
+  }
+
   public openModal(): void {
     $(this.modal?.nativeElement).modal('show');
   }
@@ -100,6 +117,16 @@ export class EditGoalDetailComponent implements OnInit {
   }
 
   saveChanges() {
+    if(this.myForm.valid){
+      if (this.isNewRegister) {
+        this.saveNewChanges();
+      } else {
+        this.updateChanges();
+      }
+    }
+  }
+
+  private updateChanges() {
     const name: string = this.myForm.get('name')?.value;
     const description: string = this.myForm.get('description')?.value;
     const completed: boolean = this.myForm.get('completed')?.value;
@@ -124,10 +151,38 @@ export class EditGoalDetailComponent implements OnInit {
     this.closeModal();
   }
 
+  private saveNewChanges() {
+    const name: string = this.myForm.get('name')?.value;
+    const description: string = this.myForm.get('description')?.value;
+    const completed: boolean = this.myForm.get('completed')?.value;
+
+    this.goalDetail.update((goal) => ({
+      ...goal,
+      name: name,
+      description: description,
+      imageUrl: imageDefault.imageNotFound_BlobStorage,
+      complete: completed,
+    }));
+    this.service.saveGoalDetail(this.goalDetail()).subscribe({
+      next: (data: GoalDetail) => {
+        console.log('objeto result de daveGoal');
+        console.log({data});
+        this.goalDetail.set(data);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+    this.updateObjects.emit('Save item');
+    this.goalDetailId = this.goalDetail().id;
+    this.loadDetails(this.listId, this.goalDetailId);
+    this.isNewRegister = false;
+  }
+
   private createFrom(): FormGroup {
     return this.builder.group({
       name: ['', Validators.required],
-      description: [''],
+      description: ['', Validators.required],
       imgFile: [],
       completed: [false],
     });
@@ -136,7 +191,6 @@ export class EditGoalDetailComponent implements OnInit {
   private loadForm() {
     this.myForm.get('name')?.setValue(this.goalDetail().name);
     this.myForm.get('description')?.setValue(this.goalDetail().description);
-    // this.myForm.get('name')?.setValue(this.goalDetail().);
     this.myForm.get('completed')?.setValue(this.goalDetail().complete);
   }
 
@@ -164,11 +218,10 @@ export class EditGoalDetailComponent implements OnInit {
         formData
       )
       .subscribe({
-        next: (data: string) => {
-          
-          console.log({ newUrlData: data });
+        next: (data: ResponseDefault<string>) => {
+          console.log({ data });
           this.goalDetail.update((goal) => {
-            return { ...goal, imageUrl: data };
+            return { ...goal, imageUrl: data.result };
           });
 
           console.log('aftetupdate signal');
