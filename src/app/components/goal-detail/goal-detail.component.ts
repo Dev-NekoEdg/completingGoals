@@ -189,12 +189,25 @@ export class GoalDetailComponent implements OnInit {
 
   // Paginator
   changeSelection(event: PaginatorEmit) {
+
+    let param: FilterParam | null = {
+      field: this.searchType(),
+      value: this.searchValue(),
+    };
+
+    if(this.searchValue() === '' 
+      || this.searchValue() === null 
+      || this.searchValue() === undefined
+    ){
+      param = null;
+    }
+
     this.filter.update((f) => {
       return {
         ...f,
         currentPage: event.currentPage,
         pageSize: event.pageSize,
-        data: null,
+        data: param,
       };
     });
     // console.log('changeSelection: ' + this.listId);

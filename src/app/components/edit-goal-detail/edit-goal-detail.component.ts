@@ -69,6 +69,17 @@ export class EditGoalDetailComponent implements OnInit {
     this.goalDetail();
   }
 
+public getterName(){
+  return this.myForm.controls['name']?.touched && 
+  this.myForm.controls['name']?.invalid;
+}
+
+public getterDescription(){
+  return this.myForm.controls['description']?.touched 
+  && this.myForm.controls['description']?.invalid;
+}
+
+
   public loadDetails(listId: number, detailId: number) {
     this.isNewRegister = false;
     this.service.getGoalDetail(listId, detailId).subscribe({
@@ -148,6 +159,7 @@ export class EditGoalDetailComponent implements OnInit {
       },
     });
     this.updateObjects.emit('update item');
+    this.loadDetails(this.listId, this.goalDetailId);
     this.closeModal();
   }
 
@@ -181,8 +193,8 @@ export class EditGoalDetailComponent implements OnInit {
 
   private createFrom(): FormGroup {
     return this.builder.group({
-      name: ['', Validators.required],
-      description: ['', Validators.required],
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      description: ['', [Validators.required, Validators.minLength(5)]],
       imgFile: [],
       completed: [false],
     });

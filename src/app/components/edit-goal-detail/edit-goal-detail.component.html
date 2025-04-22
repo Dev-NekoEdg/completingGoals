@@ -16,7 +16,12 @@
             <div class="col-sm-9">
               <input type="text" class="form-control"
               formControlName="name"
+              [class.validationFormControl]="getterName()"
               >
+              <span *ngIf="getterName()"
+              [class.validationFormControlMessage]="getterName()">
+                * Campo obligatorio y m&iacute;nimo de 3 caracteres.
+              </span>
             </div>
           </div>
           <div class="mb-3 row">
@@ -24,7 +29,12 @@
             <div class="col-sm-9">
               <textarea class="form-control"
               formControlName="description"
+              [class.validationFormControl]="getterDescription()"
               rows="1"></textarea>
+              <span *ngIf="getterDescription()"
+              [class.validationFormControlMessage]="getterDescription()">
+               * Campo obligatorio y m&iacute;nimo de 5 caracteres.
+              </span>
             </div>
           </div>
           <div class="mb-3 row">

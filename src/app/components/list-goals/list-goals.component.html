@@ -42,7 +42,7 @@
             >
             <button class="btn btn-outline-info mx-1"
               (click)="redirectDeatil(item.id)"
-            >test</button>
+            >Objetivos</button>
         </td>
       </tr>
     </tbody>
@@ -53,7 +53,8 @@
 <div>
   <app-paginator
     [quantityPages]="filter().pages"
-    (updateObjects)="changeSelection($event)"></app-paginator>
+    (updateObjects)="changeSelection($event)"
+    ></app-paginator>
 </div>
 <app-edit-list-goal (updateObjects)="validateUpdate($event)"
 ></app-edit-list-goal>

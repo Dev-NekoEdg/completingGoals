@@ -1,0 +1,11 @@
+.validationFormControl {
+    border-color: #ff0000;
+    background-color: hsl(0, 55%, 67%);
+}
+
+.validationFormControlMessage {
+
+    color: #ff0000;
+    font-weight: bold;
+    font-size: smaller;
+}
