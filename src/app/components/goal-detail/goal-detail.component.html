@@ -24,11 +24,16 @@
       value="Buscar" (click)="searchGoalItems()">
   </div>
 </div>
-<div class="mb-3 text-end">
-  <button type="button"
-    (click)="addNewItem()"
-   class="btn btn-primary btn-sm">Agregar Item a la lista</button>
+
+<div class="mb-3 d-flex justify-content-between">
+  <div># items <b>{{filter().totalRecords}}</b></div>
+  <div>
+    <button type="button"
+      (click)="addNewItem()"
+      class="btn btn-primary btn-sm">Agregar Item a la lista</button>
+  </div>
 </div>
+
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
   @for(detail of goalDetails(); track detail.id){

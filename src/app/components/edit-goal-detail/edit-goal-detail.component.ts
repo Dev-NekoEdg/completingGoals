@@ -193,8 +193,8 @@ public getterDescription(){
 
   private createFrom(): FormGroup {
     return this.builder.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      description: ['', [Validators.required, Validators.minLength(5)]],
+      name: ['', [Validators.required, Validators.minLength(1)]],
+      description: ['', [Validators.required, Validators.minLength(1)]],
       imgFile: [],
       completed: [false],
     });

@@ -148,6 +148,7 @@ export class GoalDetailComponent implements OnInit {
   }
 
   selectSearchType(param: string) {
+    this.searchValue.set('');
     this.searchType.set(param);
   }
 
