@@ -1,4 +1,4 @@
-
+import { environment } from './../environments/environment';
 export const pagination = {
 
   sizes: [5, 10, 15, 20],
@@ -7,7 +7,7 @@ export const pagination = {
 }
 
 export const endpoints = {
-  baseUrl: 'https://localhost:7164/api/v1/',
+  baseUrl: `${environment.apiUrl}/api/v1/`,
   list: 'lists/',
   listDetails: 'lists-items/'
 }
