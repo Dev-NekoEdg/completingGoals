@@ -27,10 +27,11 @@ jobs:
         run: |
           npm install
           npm run build --if-present
-          npm run test --if-present
+          npm run test:ci --if-present
 
       - name: Zip artifact for deployment
-        run: zip -r node-app.zip .
+        run: |
+          zip -r node-app.zip .
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -70,5 +71,5 @@ jobs:
         with:
           app-name: 'testing-x'
           slot-name: 'Production'
-          package: .
+          package: ./dist/todo-list-fe/browser/
           
