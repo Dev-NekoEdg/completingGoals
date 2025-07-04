@@ -71,5 +71,5 @@ jobs:
         with:
           app-name: 'testing-x'
           slot-name: 'Production'
-          package: ./dist/completing-goals
+          package: ./dist/completing-goals/browser
           
